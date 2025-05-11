@@ -5,15 +5,15 @@ This script provides utilities for paper tools, right now solely Markdown2PDF
 
 To utilize the Markdown to PDF functionality, ensure you have the following dependencies installed:
 1.  **fpdf2**: You must install `fpdf2`. This can typically be done via pip:
-    ```bash
+    bash
     pip install fpdf2
-    ```bash
-        pip install fpdf2```
+    bash
+    pip install fpdf2
+
+2.  **markdown**: You must install `markdown`. This can typically be done via pip:
+    bash
+    pip install markdown
         
-    2.  **markdown**: You must install `markdown`. This can typically be done via pip:
-        ```bash
-        pip install markdown
-        ```
 
 **Command-Line Usage:**
 

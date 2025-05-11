@@ -8,8 +8,8 @@ To utilize the Markdown to PDF functionality, ensure you have the following depe
     ```bash
     pip install fpdf2
     ```bash
-        pip install fpdf2
-        ```
+        pip install fpdf2```
+        
     2.  **markdown**: You must install `markdown`. This can typically be done via pip:
         ```bash
         pip install markdown

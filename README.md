@@ -17,7 +17,7 @@ To utilize the Markdown to PDF functionality, ensure you have the following depe
     bash
     pip install markdown
     ``` 
-3. create markdowncopypasta file 
+3. create markdowncopypasta.md file 
 4. in input create a config.ini which contains email: your-email #only if you need to download papers
 **Command-Line Usage:**
 

@@ -2,3 +2,7 @@ input/
 results/
 
 markdowncopypasta.md
+
+.vscode/
+__pycache__/
+

@@ -5,4 +5,5 @@ markdowncopypasta.md
 
 .vscode/
 __pycache__/
+.env
 

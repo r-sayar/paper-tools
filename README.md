@@ -31,4 +31,20 @@ This script can be executed from the command line. The general syntax is:
 **Future Enhancements:**
 
 This script will be further modified and improved to enhance its usability and integration, particularly with Platform House.
+
+
+**Using this in the CLI**
+Type in any terminal: 
+1. export PATH="$PATH:/path/to/this/folder/paper-tools"
+2. chmod +x /path/to/this/folder/paper-tools/markdown2pdf.py
+3. chmod +x /path/to/this/folder/paper-tools/download-futurehouse-papers.py
+4. 
+    nano ~/.zshrc #or nano ~/.bash_profile depending on your OS
+    Add this line at the end (if not already present):
+    export PATH="$PATH:/Users/rls/Desktop/programming-projects/paper-tools"
+    Open new terminal:
+        source ~/.zshrc
+5. (optional) If you are using mac, you might need to add your Terminal to have System Wide Access. Ask a GPT on how to do that. 
 """
+
+

@@ -60,6 +60,15 @@ HTML_FORM = """
             <textarea id="markdown_text" name="markdown_text" rows="10" style="width:100%;" placeholder="Paste your Markdown here..."></textarea>
             <input type="submit" value="Convert to PDF">
         </form>
+        <form method="post" action="/download_related">
+            <input type="hidden" name="markdown_text" id="hidden_markdown_text">
+            <input type="submit" value="Download Related Articles as ZIP">
+        </form>
+        <script>
+            document.querySelector('form[action="/download_related"]').addEventListener('submit', function(e) {
+                document.getElementById('hidden_markdown_text').value = document.getElementById('markdown_text').value;
+            });
+        </script>
         {% if message %}
             <p class="message {{ 'error' if error else 'success' }}">{{ message }}</p>
         {% endif %}
@@ -144,7 +153,7 @@ def convert_markdown_to_pdf():
                         try:
                                 # Adjust this command if your markdown2pdf tool has different arguments
                                 # Example: markdown2pdf input.md -o output.pdf
-                                cmd = ['/Users/rls/Desktop/programming-projects/paper-tools/markdown2pdf.py', input_md_path, output_pdf_path]
+                                cmd = ['./markdown2pdf.py', input_md_path, output_pdf_path']
                                 
                                 # If you were using Pandoc, it would be:
                                 # cmd = ['pandoc', input_md_path, '-o', output_pdf_path]
@@ -200,7 +209,7 @@ def convert_markdown_to_pdf():
                         try:
                                 # Adjust this command if your markdown2pdf tool has different arguments
                                 # Example: markdown2pdf input.md -o output.pdf
-                                cmd = ['/Users/rls/Desktop/programming-projects/paper-tools/markdown2pdf.py', input_md_path, output_pdf_path]
+                                cmd = ['./markdown2pdf.py', input_md_path, output_pdf_path']
                                 
                                 # If you were using Pandoc, it would be:
                                 # cmd = ['pandoc', input_md_path, '-o', output_pdf_path]
@@ -236,6 +245,37 @@ def convert_markdown_to_pdf():
                                 return render_template_string(HTML_FORM, message=f"An unexpected error occurred: {str(e)}", error=True), 500
         else:
                 return render_template_string(HTML_FORM, message="Invalid file type. Please upload a .md or .markdown file.", error=True), 400
+
+@app.route('/download_related', methods=['POST'])
+def download_related():
+    markdown_text = request.form.get('markdown_text', '')
+    if not markdown_text.strip():
+        return render_template_string(HTML_FORM, message="Please paste Markdown text to find related articles.", error=True), 400
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        input_md_path = os.path.join(temp_dir, "input.md")
+        output_zip_path = os.path.join(temp_dir, "related_articles.zip")
+        with open(input_md_path, "w", encoding="utf-8") as f:
+            f.write(markdown_text)
+
+        cmd = [
+            './download-futurehouse-papers.py',
+            input_md_path,
+            output_zip_path
+        ]
+        process = subprocess.run(cmd, capture_output=True, text=True)
+        if process.returncode != 0 or not os.path.exists(output_zip_path):
+            error_message = "Failed to download related articles as ZIP."
+            if process.stderr:
+                error_message += f" Details: {process.stderr[:500]}"
+            return render_template_string(HTML_FORM, message=error_message, error=True), 500
+
+        return send_file(
+            output_zip_path,
+            mimetype='application/zip',
+            as_attachment=True,
+            download_name='related_articles.zip'
+        )
 
 if __name__ == '__main__':
         # For development only. In production, use a proper WSGI server.
